@@ -1,7 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { createLink } from '@/app/functions/create-link'
-import { isRight } from '@/infra/shared/either'
+import { isRight, unwrapEither } from '@/infra/shared/either'
 
 const shortUrlRegex = /^[a-z0-9-_]{3,30}$/
 
@@ -45,9 +45,11 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
         return reply.status(201).send()
       }
 
-      return reply
-        .status(400)
-        .send({ message: 'Não foi possível efetuar a criação do link.' })
+      return reply.status(400).send({
+        message:
+          unwrapEither(result).message ??
+          'Não foi possível efetuar a criação do link.',
+      })
     }
   )
 }
