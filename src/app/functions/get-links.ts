@@ -1,10 +1,11 @@
-import { and, asc, count, desc, ilike } from 'drizzle-orm'
+import { and, asc, count, desc, eq, ilike } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '@/infra/db'
 import { schema } from '@/infra/db/schemas'
 import { type Either, makeRight } from '@/infra/shared/either'
 
 const getLinksInput = z.object({
+  id: z.string().optional(),
   originalUrl: z.string().optional(),
   shortUrl: z.string().optional(),
   sortBy: z.enum(['createdAt']).optional(),
@@ -28,7 +29,7 @@ type GetLinksOutput = {
 export async function getLinks(
   input: GetLinksInput
 ): Promise<Either<never, GetLinksOutput>> {
-  const { page, pageSize, originalUrl, shortUrl, sortBy, sortDirection } =
+  const { page, pageSize, id, originalUrl, shortUrl, sortBy, sortDirection } =
     getLinksInput.parse(input)
 
   const [links, [{ total }]] = await Promise.all([
@@ -42,6 +43,7 @@ export async function getLinks(
       .from(schema.links)
       .where(
         and(
+          id ? eq(schema.links.id, id) : undefined,
           originalUrl
             ? ilike(schema.links.originalUrl, `%${originalUrl}%`)
             : undefined,
