@@ -10,6 +10,7 @@ import {
 } from 'fastify-type-provider-zod'
 import { createLinkRoute } from './routes/create-link'
 import { deleteLinkRoute } from './routes/delete-link'
+import { exportLinksRoute } from './routes/export-links'
 import { getLinksRoute } from './routes/get-links'
 import { getOriginalUrlLinkRoute } from './routes/get-original-url-link'
 import { incrementClickLinkRoute } from './routes/increment-click-link'
@@ -50,6 +51,7 @@ server.register(fastifySwaggerUi, {
 
 server.register(createLinkRoute)
 server.register(deleteLinkRoute)
+server.register(exportLinksRoute)
 server.register(getLinksRoute)
 server.register(getOriginalUrlLinkRoute)
 server.register(incrementClickLinkRoute)
