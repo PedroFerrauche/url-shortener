@@ -21,6 +21,7 @@ type GetLinksOutput = {
     id: string
     originalUrl: string
     shortUrl: string
+    clicks: number
     createdAt: Date
   }[]
   total: number
@@ -38,6 +39,7 @@ export async function getLinks(
         id: schema.links.id,
         originalUrl: schema.links.originalUrl,
         shortUrl: schema.links.shortUrl,
+        clicks: schema.links.clicks,
         createdAt: schema.links.createdAt,
       })
       .from(schema.links)
@@ -76,6 +78,8 @@ export async function getLinks(
         )
       ),
   ])
+
+  console.log(links)
 
   return makeRight({ links, total })
 }
