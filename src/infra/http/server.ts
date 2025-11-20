@@ -11,6 +11,7 @@ import {
 import { createLinkRoute } from './routes/create-link'
 import { deleteLinkRoute } from './routes/delete-link'
 import { getLinksRoute } from './routes/get-links'
+import { getOriginalUrlLinkRoute } from './routes/get-original-url-link'
 import { incrementClickLinkRoute } from './routes/increment-click-link'
 
 const server = fastify()
@@ -50,6 +51,7 @@ server.register(fastifySwaggerUi, {
 server.register(createLinkRoute)
 server.register(deleteLinkRoute)
 server.register(getLinksRoute)
+server.register(getOriginalUrlLinkRoute)
 server.register(incrementClickLinkRoute)
 
 server.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
