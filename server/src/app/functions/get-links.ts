@@ -79,7 +79,5 @@ export async function getLinks(
       ),
   ])
 
-  console.log(links)
-
   return makeRight({ links, total })
 }
