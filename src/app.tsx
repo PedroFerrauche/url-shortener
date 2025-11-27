@@ -1,5 +1,15 @@
+import { Routes, Route } from "react-router-dom";
+import Index from "./pages/index";
+import Redirect from "./pages/redirect";
+
 export function App() {
+
   return (
-    <h1 className="text-3xl font-bold underline">Hello World</h1>
+      <div>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/:shortUrl" element={<Redirect />} />
+        </Routes>
+      </div>
   )
 }
