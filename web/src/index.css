@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --blue-base: theme(colors.blue.base);
+  }
+}
+
+@layer components {
+    [data-progress-widget] {
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    [data-progress-widget="true"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 2px;
+    width: 35%;
+    background: var(--blue-base);
+    animation: lineProgress 1.3s  ease-in-out infinite;
+    }
+}
+
+@keyframes lineProgress {
+  0% { left: -35%; }
+  100% { left: 135%; }
+}
