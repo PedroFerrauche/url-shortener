@@ -4,7 +4,7 @@ import { exportLinks } from '@/app/functions/export-links'
 import { unwrapEither } from '@/infra/shared/either'
 
 export const exportLinksRoute: FastifyPluginAsyncZod = async server => {
-  server.post(
+  server.get(
     '/links/exports',
     {
       schema: {
