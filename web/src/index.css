@@ -10,18 +10,23 @@
 
 @layer components {
     [data-progress-widget] {
-        overflow-x: hidden;
-        position: relative;
+      overflow-x: hidden;
+      position: relative;
     }
 
     [data-progress-widget="true"]::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    height: 2px;
-    width: 35%;
-    background: var(--blue-base);
-    animation: lineProgress 1.3s  ease-in-out infinite;
+      content: "";
+      position: absolute;
+      top: 0;
+      height: 2px;
+      width: 35%;
+      background: var(--blue-base);
+      animation: lineProgress 1.3s  ease-in-out infinite;
+    }
+
+    input {
+      box-shadow: 0 0 0px 100px white inset;
+      -webkit-box-shadow: 0 0 0px 100px white inset;
     }
 }
 

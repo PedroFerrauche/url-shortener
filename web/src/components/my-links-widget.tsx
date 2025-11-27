@@ -57,7 +57,7 @@ export function MyLinksWidget({ links, onSuccess, progress }: ListaRegistrosProp
                         Baixar CSV
                     </Button>
                 </div>
-                <div className="row-span-1 max-h-[calc(100dvh-300px)] overflow-y-auto scrollbar scrollbar-thumb-blue-base scrollbar-track-transparent">
+                <div className="row-span-1 max-h-[calc(100dvh-530px)] sm:max-h-[calc(100dvh-300px)] overflow-y-auto scrollbar scrollbar-thumb-blue-base scrollbar-track-transparent">
                     <div>
                         { links.length == 0 ? (
                             <div className="flex flex-col justify-center items-center px-4 py-6 gap-3 border-t">

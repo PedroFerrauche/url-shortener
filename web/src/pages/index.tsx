@@ -42,7 +42,7 @@ export default function Index() {
   }, []);
 
   return (
-    <main className="h-dvh max-w-5xl mx-auto px-6">
+    <main className="h-dvh max-w-5xl mx-auto px-6 overflow-hidden">
       <div className="grid grid-flow-row-dense grid-cols-1 sm:grid-cols-2 gap-5">
         <img src={Logo} alt="Logo" className="w-[96px] mx-auto col-span-full mt-8 sm:mx-0 sm:mt-20" />
         <NewLinkWidget onSuccess={carregarLinks} />

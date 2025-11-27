@@ -9,7 +9,7 @@ export function TextField({label, registration, error = "", prefix, name, placeh
       
       <div className="bg-white border h-[48px] rounded-lg flex flex-row items-center px-4 overflow-hidden focus-within:border-blue-base">
         <span className="text-gray-500 font-normal">{prefix}</span>
-        <input type="text" {...registration} placeholder={placeholder} className="w-full h-full outline-none" />
+        <input type="text" {...registration} placeholder={placeholder} className="w-full h-full outline-none shadow-zinc-800" />
       </div>
       
       {error && (
