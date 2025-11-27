@@ -14,7 +14,7 @@ export const getOriginalUrlLinkRoute: FastifyPluginAsyncZod = async server => {
           shortUrl: z.string(),
         }),
         response: {
-          200: z.object({ originalUrl: z.string() }),
+          200: z.object({ id: z.string(), originalUrl: z.string() }),
           404: z.object({ message: z.string() }),
         },
       },
@@ -27,9 +27,11 @@ export const getOriginalUrlLinkRoute: FastifyPluginAsyncZod = async server => {
       })
 
       if (isRight(result)) {
-        return reply
-          .status(200)
-          .send({ originalUrl: unwrapEither(result).originalUrl })
+        const unwrappedResult = unwrapEither(result)
+        return reply.status(200).send({
+          id: unwrappedResult.id,
+          originalUrl: unwrappedResult.originalUrl,
+        })
       }
 
       return reply.status(404).send({ message: unwrapEither(result).message })
