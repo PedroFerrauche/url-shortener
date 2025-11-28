@@ -27,7 +27,7 @@ export async function deleteLink(
 
   const existingLink = await getLinks(getLinksInput)
 
-  if (unwrapEither(existingLink).total === 0) {
+  if (unwrapEither(existingLink).links.length === 0) {
     return makeLeft({ message: 'Link not found.' })
   }
 

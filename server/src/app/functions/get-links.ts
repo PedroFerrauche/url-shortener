@@ -8,10 +8,6 @@ const getLinksInput = z.object({
   id: z.string().optional(),
   originalUrl: z.string().optional(),
   shortUrl: z.string().optional(),
-  sortBy: z.enum(['createdAt']).optional(),
-  sortDirection: z.enum(['asc', 'desc']).optional(),
-  page: z.number().optional().default(1),
-  pageSize: z.number().optional().default(20),
 })
 
 type GetLinksInput = z.input<typeof getLinksInput>
@@ -24,16 +20,15 @@ type GetLinksOutput = {
     clicks: number
     createdAt: Date
   }[]
-  total: number
 }
 
 export async function getLinks(
   input: GetLinksInput
 ): Promise<Either<never, GetLinksOutput>> {
-  const { page, pageSize, id, originalUrl, shortUrl, sortBy, sortDirection } =
+  const { id, originalUrl, shortUrl } =
     getLinksInput.parse(input)
 
-  const [links, [{ total }]] = await Promise.all([
+  const [links] = await Promise.all([
     db
       .select({
         id: schema.links.id,
@@ -52,32 +47,8 @@ export async function getLinks(
           shortUrl ? ilike(schema.links.shortUrl, `%${shortUrl}%`) : undefined
         )
       )
-      .orderBy(fields => {
-        if (sortBy && sortDirection === 'asc') {
-          return asc(fields[sortBy])
-        }
-
-        if (sortBy && sortDirection === 'desc') {
-          return desc(fields[sortBy])
-        }
-
-        return desc(fields.id)
-      })
-      .offset((page - 1) * pageSize)
-      .limit(pageSize),
-
-    db
-      .select({ total: count(schema.links.id) })
-      .from(schema.links)
-      .where(
-        and(
-          originalUrl
-            ? ilike(schema.links.originalUrl, `%${originalUrl}%`)
-            : undefined,
-          shortUrl ? ilike(schema.links.shortUrl, `%${shortUrl}%`) : undefined
-        )
-      ),
+      .orderBy(desc(schema.links.createdAt)),
   ])
 
-  return makeRight({ links, total })
+  return makeRight({ links })
 }

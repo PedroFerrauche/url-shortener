@@ -10,8 +10,8 @@ import {
 import { getLinks } from './get-links'
 
 const createLinkInput = z.object({
-  originalUrl: z.string(),
-  shortUrl: z.string(),
+  originalUrl: z.string().url(),
+  shortUrl: z.string().regex(/^[a-z0-9-_]{3,30}$/),
 })
 
 type CreateLinkInput = z.input<typeof createLinkInput>
@@ -30,7 +30,7 @@ export async function createLink(
 
   const existingLink = await getLinks(getLinksInput)
 
-  if (unwrapEither(existingLink).total > 0) {
+  if (unwrapEither(existingLink).links.length > 0) {
     return makeLeft({ message: 'Link already exists.' })
   }
 

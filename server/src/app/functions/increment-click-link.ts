@@ -18,7 +18,7 @@ type IncrementClickLinkInput = z.input<typeof incrementClickLinkInput>
 
 export async function incrementClickLink(
   input: IncrementClickLinkInput
-): Promise<Either<{ message: string }, { message: string }>> {
+): Promise<Either<{ message: string }, { message: string, clicks: number }>> {
   const { id } = incrementClickLinkInput.parse(input)
 
   const getLinksInput = {
@@ -27,17 +27,20 @@ export async function incrementClickLink(
 
   const existingLink = await getLinks(getLinksInput)
 
-  if (unwrapEither(existingLink).total === 0) {
+  if (unwrapEither(existingLink).links.length === 0) {
     return makeLeft({ message: 'Link not found.' })
   }
 
   const result = unwrapEither(existingLink)
-  const clicks = result.links[0].clicks
+  const clicks = result.links[0].clicks + 1
 
   await db
     .update(schema.links)
-    .set({ clicks: clicks + 1 })
+    .set({ clicks: clicks })
     .where(eq(schema.links.id, id))
 
-  return makeRight({ message: 'Link click incremented successfully.' })
+  return makeRight({ 
+    message: 'Link click incremented successfully.', 
+    clicks: clicks 
+  })
 }

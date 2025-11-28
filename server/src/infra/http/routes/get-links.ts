@@ -13,10 +13,6 @@ export const getLinksRoute: FastifyPluginAsyncZod = async server => {
         querystring: z.object({
           originalUrl: z.string().optional(),
           shortUrl: z.string().optional(),
-          sortBy: z.enum(['createdAt']).optional(),
-          sortDirection: z.enum(['asc', 'desc']).optional(),
-          page: z.coerce.number().optional().default(1),
-          pageSize: z.coerce.number().optional().default(20),
         }),
         response: {
           200: z.object({
@@ -29,27 +25,22 @@ export const getLinksRoute: FastifyPluginAsyncZod = async server => {
                 createdAt: z.date(),
               })
             ),
-            total: z.number(),
           }),
         },
       },
     },
     async (request, reply) => {
-      const { originalUrl, shortUrl, sortBy, sortDirection, page, pageSize } =
+      const { originalUrl, shortUrl } =
         request.query
 
       const result = await getLinks({
         originalUrl: originalUrl,
-        shortUrl: shortUrl,
-        sortBy: sortBy,
-        sortDirection: sortDirection,
-        page: page,
-        pageSize: pageSize,
+        shortUrl: shortUrl
       })
 
-      const { links, total } = unwrapEither(result)
+      const { links } = unwrapEither(result)
 
-      return reply.status(200).send({ links, total })
+      return reply.status(200).send({ links })
     }
   )
 }
