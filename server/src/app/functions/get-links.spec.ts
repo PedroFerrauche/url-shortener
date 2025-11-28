@@ -13,7 +13,7 @@ describe('get links', () => {
                 shortUrl: 'ex-1',
                 clicks: 0,
                 createdAt: new Date(),
-            }, 
+            },
             {
                 id: randomUUID(),
                 originalUrl: 'http://google.com',
@@ -21,23 +21,22 @@ describe('get links', () => {
                 clicks: 5,
                 createdAt: new Date(),
             }
-        ]
+        ];
 
-        vi.spyOn(db, 'select').mockImplementation(() => {
-            const chain: any = {
-                from: vi.fn().mockReturnThis(),
-                where: vi.fn().mockReturnThis(),
-                orderBy: vi.fn().mockReturnThis(),
-                execute: vi.fn().mockResolvedValue(links),
-            }
-            return chain
-        })
+        const orderByMock = vi.fn().mockResolvedValue(links)
+        const whereMock = vi.fn().mockReturnValue({ orderBy: orderByMock })
+        const fromMock = vi.fn().mockReturnValue({ where: whereMock })
+        const selectMock = vi.spyOn(db, 'select').mockReturnValue({ from: fromMock } as any)
 
-        const result = await getLinks({} as any)
-        const payload = unwrapEither(result)
-console.log(payload)
-        expect(isRight(result)).toBe(true)
+        const sut = await getLinks({})
+        
+        expect(isRight(sut)).toBe(true)
+        const payload = unwrapEither(sut)
         expect(payload.links).toEqual(links)
+        expect(selectMock).toHaveBeenCalled()
+        expect(fromMock).toHaveBeenCalled()
+        expect(whereMock).toHaveBeenCalled()
+        expect(orderByMock).toHaveBeenCalled()
 
         vi.restoreAllMocks()
     })
